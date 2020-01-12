@@ -44,7 +44,7 @@ module cpu(clock, reset);
 
     instr_mem instr_mem(pc, instr);
 
-    decoder decoder(instr, opcode, rd_a_p, rs_a, imm);
+    decoder decoder(instr, opcode, rd_a_p, rs_a_p, imm);
 
     main_controller main_controller(opcode, reg_w_en, mem_w_en, reg_reg_mem_w_sel, flag_w_en, imm_en, ih_il_sel);
     alu_controller alu_controller(opcode, alu_ctrl);
