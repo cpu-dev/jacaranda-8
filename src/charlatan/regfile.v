@@ -5,7 +5,7 @@ module regfile(rd_addr, rs_addr, w_data, w_en, rd_data, rs_data, clock);
     input clock;
     output [7:0] rs_data, rd_data;
 
-    reg [7:0] register[4];
+    reg [7:0] register[0:3];
 
     assign rd_data = register[rd_addr];
     assign rs_data = register[rs_addr];

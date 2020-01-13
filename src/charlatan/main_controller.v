@@ -1,4 +1,4 @@
-module main_controller(opcode, reg_w_en, mem_w_en, flag_w_en, imm_en);
+module main_controller(opcode, reg_w_en, mem_w_en, reg_reg_mem_w_sel, reg_alu_w_sel, flag_w_en, imm_en, ih_il_sel, jmp_en, je_en);
     input [3:0] opcode;
     output reg_w_en, mem_w_en;
     output reg_reg_mem_w_sel;
@@ -8,11 +8,11 @@ module main_controller(opcode, reg_w_en, mem_w_en, flag_w_en, imm_en);
     output ih_il_sel;
     output jmp_en, je_en;
 
-    assign {reg_w_en, mem_w_en, reg_reg_mem_w_sel, reg_alu_w_sel, flag_w_en, imm_en, ih_il_sel, jmp_en, je_en} = main_control(op);
+    assign {reg_w_en, mem_w_en, reg_reg_mem_w_sel, reg_alu_w_sel, flag_w_en, imm_en, ih_il_sel, jmp_en, je_en} = main_control(opcode);
     
-    function [7:0] main_control(input [3:0] opcode)
+    function [8:0] main_control(input [3:0] opcode);
         begin
-            case(op)
+            case(opcode)
             4'b0000: main_control = 9'b100000000;    //mov
             4'b0001: main_control = 9'b100100000;    //add
             4'b0011: main_control = 9'b100100000;    //and

@@ -1,7 +1,7 @@
-module cpu(clock, reset);
-    input clock, reset;
+module cpu(clock);
+    input clock;
     
-    reg [7:0] pc;
+    reg [7:0] pc = 8'h00;
     reg flag;
     wire [7:0] instr;
     
@@ -47,12 +47,12 @@ module cpu(clock, reset);
 
     instr_mem instr_mem(pc, instr);
 
-    decoder decoder(instr, opcode, rd_a_p, rs_a_p, imm);
+    decoder decoder(instr, opcode, rs_a_p, rd_a_p, imm);
 
-    main_controller main_controller(opcode, reg_w_en, mem_w_en, reg_reg_mem_w_sel, flag_w_en, imm_en, ih_il_sel);
+    main_controller main_controller(opcode, reg_w_en, mem_w_en, reg_reg_mem_w_sel, reg_alu_w_sel, flag_w_en, imm_en, ih_il_sel, jmp_en, je_en);
     alu_controller alu_controller(opcode, alu_ctrl);
 
-    regfile regfile(rd_a, rs_a, mem_w_data, reg_w_en, rd_data, rs_data, clock);
+    regfile regfile(rd_a, rs_a, reg_w_data, reg_w_en, rd_data, rs_data, clock);
     //即値ロード時のみrd_a, rs_aを3に
     assign rd_a = imm_en ? 2'b11 : rd_a_p;
     assign rs_a = imm_en ? 2'b11 : rs_a_p;
@@ -60,7 +60,7 @@ module cpu(clock, reset);
     assign reg_w_data_p_p = reg_reg_mem_w_sel ? mem_r_data : rs_data;
     assign reg_w_data_p = reg_alu_w_sel ? alu_out : reg_w_data_p_p;
     assign reg_w_imm = ih_il_sel ? {imm, rs_data[3:0]} : {rs_data[7:4], imm};
-    assign reg_w_data = imm_en ? reg_w_imm : reg_w__data_p;
+    assign reg_w_data = imm_en ? reg_w_imm : reg_w_data_p;
 
     alu alu(rd_data, rs_data, alu_ctrl, alu_out);
     //フラグレジスタ書き込み
@@ -74,7 +74,9 @@ module cpu(clock, reset);
         end
     end
 
-    data_mem data_mem(rs_data, rd_data, mem_w_en, mem_r_data, clock);
+    wire [7:0] dbg_mem_0, dbg_mem_1;
+
+    data_mem data_mem(rs_data, rd_data, mem_w_en, mem_r_data, clock, dbg_mem_0, dbg_mem_1);
 
     always @(posedge clock) begin
         if(jmp_en) begin
@@ -82,7 +84,7 @@ module cpu(clock, reset);
         end else if(je_en) begin
             if(flag) begin
                 pc <= rs_data;
-            end else 
+            end else begin
                 pc <= pc + 1;
             end
         end else begin
