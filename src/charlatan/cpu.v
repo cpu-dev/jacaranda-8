@@ -42,6 +42,9 @@ module cpu(clock, reset);
     //ldih(1)かldil(0)かの信号
     wire ih_il_sel;
 
+    //jmp, je実行時に(1)になる信号
+    wire jmp_en, je_en;
+
     instr_mem instr_mem(pc, instr);
 
     decoder decoder(instr, opcode, rd_a_p, rs_a_p, imm);
@@ -59,11 +62,12 @@ module cpu(clock, reset);
     assign reg_w_imm = ih_il_sel ? {imm, rs_data[3:0]} : {rs_data[7:4], imm};
     assign reg_w_data = imm_en ? reg_w_imm : reg_w__data_p;
 
-//cmp未対応
     alu alu(rd_data, rs_data, alu_ctrl, alu_out);
-
+    //フラグレジスタ書き込み
     always @(posedge clock) begin
-        if(flag_w_en) begin
+        if(je_en) begin
+            flag <= 0;
+        end else if(flag_w_en) begin
             flag <= alu_out;
         end else begin
             flag <= flag;
@@ -73,6 +77,16 @@ module cpu(clock, reset);
     data_mem data_mem(rs_data, rd_data, mem_w_en, mem_r_data, clock);
 
     always @(posedge clock) begin
-        pc <= pc + 1;
+        if(jmp_en) begin
+            pc <= rs_data;
+        end else if(je_en) begin
+            if(flag) begin
+                pc <= rs_data;
+            end else 
+                pc <= pc + 1;
+            end
+        end else begin
+            pc <= pc + 1;
+        end
     end
 endmodule
