@@ -3,6 +3,7 @@
 #include <string.h>
 #include <limits.h>
 #include <stdint.h>
+#include <ctype.h>
 
 // #define DEBUG
 
@@ -31,7 +32,7 @@ typedef enum {
     R3
 } reg_t;
 
-uint8_t
+int8_t
 opcode(char *mnemonic)
 {
     if(!strncmp(mnemonic, "mov", 3))
@@ -104,7 +105,7 @@ main(void)
 {
     char buf[256];
     char *p;
-    uint8_t inst, result;
+    int8_t inst, result;
     FILE *in, *out;
 
     printf("FILE name: ");
@@ -153,7 +154,6 @@ main(void)
                 //fprintf(out, "%1x%1x", inst, rdrs(p));
                 break;
         }
-        printf("result: %x\n", result);
     }
     fprintf(out, "\n");
     fclose(in);
