@@ -1,44 +1,12 @@
-
 #include<iostream>
 #include<bitset>
+#include<fstream>
+#include <cstdio>
 
 uint8_t reg[4] = {0, 0, 0, 0};
 uint8_t pc = 0;
 uint8_t ram[129];
-uint8_t rom[111] = {0xc0
-    , 0xd7
-    , 0x03
-    , 0xc0
-    , 0xd0
-    , 0xf3
-    , 0x03
-    , 0xd1
-    , 0xf3
-    , 0xc0
-    , 0xd1
-    , 0x07
-    , 0x0b
-    , 0xc0
-    , 0xd0
-    , 0xef
-    , 0x93
-    , 0xc1
-    , 0xdd
-    , 0xa3
-    , 0x16
-    , 0xd1
-    , 0xf7
-    , 0x06
-    , 0xeb
-    , 0x13
-    , 0xc0
-    , 0xdd
-    , 0xb3
-    , 0x00
-    , 0xc1
-    , 0xdd
-    , 0xb3
-};
+uint8_t rom[111];
 bool flag;
 
 // ldil 3 : reg[3] = 3
@@ -47,11 +15,25 @@ bool flag;
 // mov 1 3: reg[1] = reg[3]
 // jmp 1  : pc = reg[1]
 
-int main(){
+int main(int argc, char *argv[]){
     uint8_t op, rs, rd, imm;
     uint8_t instr;
-    int cnt = 0;
+    int cnt;
+    std::ifstream fin(argv[1], std::ios::binary);
+    uint8_t inst_reader;
 
+    if(!fin) {
+        std::cout << "file open error!" << std::endl;
+        return -1;
+    }
+
+    cnt = 0;
+    while(!fin.eof()) {
+        fin.read((char *)&inst_reader, sizeof(uint8_t));
+        rom[cnt++] = inst_reader;
+    }
+
+    cnt = 0;
     while(1){
         char enter = 0;
         //fetch & decode
