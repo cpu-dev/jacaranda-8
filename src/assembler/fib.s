@@ -26,8 +26,8 @@
     mov r1, r2 // r1 = r2;
     ld r2, r3 // r2 = mem[1];
     add r0, r3 // r0++;
-    ldih d
-    ldil 0
+    ldih 0
+    ldil d
     jmp r3
 //end
     mov r0, r0 // nop
