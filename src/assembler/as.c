@@ -5,12 +5,12 @@
 #include <stdint.h>
 #include <ctype.h>
 
-// #define DEBUG
+//#define DEBUG
 
 typedef enum {
     MOV = 0,
     ADD,
-    AND,
+    AND = 3,
     OR,
     NOT,
     SLL,
@@ -74,7 +74,7 @@ rs(char *p)
 #ifdef DEBUG
     printf("arguments(rs): %s\n", p);
 #endif
-    return strtol(++p, &p, 10);
+    return strtol(++p, &p, 16);
 }
 
 uint8_t
@@ -83,7 +83,7 @@ imm(char *p)
 #ifdef DEBUG
     printf("arguments(imm): %s\n", p);
 #endif
-   return strtol(p, &p, 10);
+   return strtol(p, &p, 16);
 }
 
 uint8_t
@@ -93,10 +93,10 @@ rdrs(char *p)
     printf("arguments(rd/rs): %s\n", p);
 #endif
     int rd, rs;
-    rd = strtol(++p, &p, 10);
+    rd = strtol(++p, &p, 16);
     while(isspace(*p) || *p == ',')
         ++p;
-    rs = strtol(++p, &p, 10);
+    rs = strtol(++p, &p, 16);
     return (rd << 2) + rs;
 }
 
@@ -140,22 +140,18 @@ main(void)
             case JMP:
                 result = (inst << 4) + rs(p);
                 fwrite(&result, 1, 1, out);
-                //fprintf(out, "%1x%1x", inst, rs(p));
                 break;
             case LDIH:
             case LDIL:
                 result = (inst << 4) + imm(p);
                 fwrite(&result, 1, 1, out);
-                //fprintf(out, "%1x%1x", inst, imm(p));
                 break;
             default:
                 result = (inst << 4) + rdrs(p);
                 fwrite(&result, 1, 1, out);
-                //fprintf(out, "%1x%1x", inst, rdrs(p));
                 break;
         }
     }
-    fprintf(out, "\n");
     fclose(in);
     fclose(out);
     return 0;
