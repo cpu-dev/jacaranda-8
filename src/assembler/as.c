@@ -3,6 +3,7 @@
 #include <string.h>
 #include <limits.h>
 #include <stdint.h>
+#include <ctype.h>
 
 // #define DEBUG
 
@@ -31,7 +32,7 @@ typedef enum {
     R3
 } reg_t;
 
-int
+int8_t
 opcode(char *mnemonic)
 {
     if(!strncmp(mnemonic, "mov", 3))
@@ -67,7 +68,7 @@ opcode(char *mnemonic)
     return -1;
 }
 
-int
+uint8_t
 rs(char *p)
 {
 #ifdef DEBUG
@@ -76,7 +77,7 @@ rs(char *p)
     return strtol(++p, &p, 10);
 }
 
-int
+uint8_t
 imm(char *p)
 {
 #ifdef DEBUG
@@ -85,7 +86,7 @@ imm(char *p)
    return strtol(p, &p, 10);
 }
 
-int
+uint8_t
 rdrs(char *p)
 {
 #ifdef DEBUG
@@ -104,7 +105,7 @@ main(void)
 {
     char buf[256];
     char *p;
-    int inst;
+    int8_t inst, result;
     FILE *in, *out;
 
     printf("FILE name: ");
@@ -137,14 +138,20 @@ main(void)
                 return -1;
             case JE:
             case JMP:
-                fprintf(out, "%1x%1x", inst, rs(p));
+                result = (inst << 4) + rs(p);
+                fwrite(&result, 1, 1, out);
+                //fprintf(out, "%1x%1x", inst, rs(p));
                 break;
             case LDIH:
             case LDIL:
-                fprintf(out, "%1x%1x", inst, imm(p));
+                result = (inst << 4) + imm(p);
+                fwrite(&result, 1, 1, out);
+                //fprintf(out, "%1x%1x", inst, imm(p));
                 break;
             default:
-                fprintf(out, "%1x%1x", inst, rdrs(p));
+                result = (inst << 4) + rdrs(p);
+                fwrite(&result, 1, 1, out);
+                //fprintf(out, "%1x%1x", inst, rdrs(p));
                 break;
         }
     }
