@@ -7,9 +7,9 @@ module UART(
     input wire rx_en,
     input wire begin_flag,
     input wire rx,
-    input wire tx_data,
+    input wire[7:0] tx_data,
     output wire tx,
-    output wire rx_data,
+    output wire[7:0] rx_data,
     output wire busy_flag,
     output wire receive_flag
 );

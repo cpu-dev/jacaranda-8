@@ -1,14 +1,15 @@
 module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data);
     input clock;
     input [7:0] instr;
-    output [7:0] pc = 8'h00;
+    output [7:0] pc;
     //レジスタから読み込んだデータ
     output [7:0] rd_data, rs_data;
     //メモリにデータを書き込むか
     output mem_w_en;
     //メモリから読み込んだデータ
-    output [7:0] mem_r_data;
+    input [7:0] mem_r_data;
     reg flag;
+    reg [7:0] pc = 0;
     
     wire [3:0] opcode;
     wire [1:0] rd_a, rd_a_p, rs_a, rs_a_p;
@@ -70,8 +71,6 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data);
             flag <= flag;
         end
     end
-
-    wire [7:0] dbg_mem_0, dbg_mem_1;
 
     always @(posedge clock) begin
         if(jmp_en) begin

@@ -1,16 +1,17 @@
 module test_bench();
     reg clock;
+    wire rx, tx;
 
     initial begin
         $dumpfile("wave.vcd");
-        $dumpvars(0, cpu);
+        $dumpvars(0, computer);
     end
 
     initial begin
         clock = 1'b0;
     end
 
-    cpu cpu(clock);
+    computer computer(clock, rx, tx);
 
     always #1 begin
         clock = ~clock;
