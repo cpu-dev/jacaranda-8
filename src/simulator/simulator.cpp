@@ -5,8 +5,8 @@
 
 uint8_t reg[4] = {0, 0, 0, 0};
 uint8_t pc = 0;
-uint8_t ram[129];
-uint8_t rom[111];
+uint8_t ram[256];
+uint8_t rom[256];
 bool flag;
 
 // ldil 3 : reg[3] = 3
@@ -122,6 +122,7 @@ int main(int argc, char *argv[]){
         printf("mem[1] = %x\n", ram[1]);
         printf("imm = %x\n", imm);
         printf("flag = %x\n\n", flag);
+        printf("tx_data = %x\n", ram[253]);
     }
 
         return 0;

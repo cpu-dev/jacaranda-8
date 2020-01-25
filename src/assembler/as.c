@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <ctype.h>
 
-//#define DEBUG
+#define DEBUG
 
 typedef enum {
     MOV = 0,
