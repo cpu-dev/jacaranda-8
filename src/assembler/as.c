@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <ctype.h>
 
-#define DEBUG
+//#define DEBUG
 
 typedef enum {
     MOV = 0,
@@ -138,16 +138,16 @@ main(void)
                 return -1;
             case JE:
             case JMP:
-                result = (inst << 4) + rs(p);
+                result = (inst << 4) | rs(p);
                 fwrite(&result, 1, 1, out);
                 break;
             case LDIH:
             case LDIL:
-                result = (inst << 4) + imm(p);
+                result = (inst << 4) | imm(p);
                 fwrite(&result, 1, 1, out);
                 break;
             default:
-                result = (inst << 4) + rdrs(p);
+                result = (inst << 4) | rdrs(p);
                 fwrite(&result, 1, 1, out);
                 break;
         }

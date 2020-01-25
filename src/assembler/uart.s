@@ -1,11 +1,17 @@
-ldih 10
-ldil 10
+ldih 0
+ldil 1
 mov r0, r3
-ldih 15
-ldil 13
+ldih f
+ldil f
+st r0, r3
+ldih a
+ldil a
+mov r0, r3
+ldih f
+ldil d
 mov r1, r3
-ldih 15
-ldil 14
+ldih f
+ldil e
 ld r2, r3
 ldih 0
 ldil 1
@@ -15,4 +21,6 @@ ldih 0
 ldil 5
 je r3
 st r0, r1
-
+ldih 1
+ldil b
+jmp r3
