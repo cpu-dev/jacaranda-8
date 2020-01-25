@@ -39,8 +39,10 @@ module computer(
     always @(posedge clock) begin
         if(rs_data == 8'd253 && mem_w_en == 1) begin
             tx_data <= rd_data;
+            begin_flag = 1;
         end else begin
             tx_data <= tx_data;
+            begin_flag = 0;
         end
     end
 
