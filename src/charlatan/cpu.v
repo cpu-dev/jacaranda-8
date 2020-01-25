@@ -1,9 +1,14 @@
-module cpu(clock);
+module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data);
     input clock;
-    
-    reg [7:0] pc = 8'h00;
+    input [7:0] instr;
+    output [7:0] pc = 8'h00;
+    //レジスタから読み込んだデータ
+    output [7:0] rd_data, rs_data;
+    //メモリにデータを書き込むか
+    output mem_w_en;
+    //メモリから読み込んだデータ
+    output [7:0] mem_r_data;
     reg flag;
-    wire [7:0] instr;
     
     wire [3:0] opcode;
     wire [1:0] rd_a, rd_a_p, rs_a, rs_a_p;
@@ -11,8 +16,6 @@ module cpu(clock);
 
     //レジスタにデータを書き込むか
     wire reg_w_en;
-    //レジスタから読み込んだデータ
-    wire [7:0] rd_data, rs_data;
     //レジスタに書き込むデータとそのバッファ
     wire [7:0] reg_w_data;
     wire [7:0] reg_w_data_p;
@@ -24,10 +27,6 @@ module cpu(clock);
     //レジスタに書き込むデータをALUからのデータか選択する(1)でALUから(0)でそれ以外
     wire reg_alu_w_sel;
 
-    //メモリにデータを書き込むか
-    wire mem_w_en;
-    //メモリから読み込んだデータ
-    wire [7:0] mem_r_data;
 
     //ALUの制御信号
     wire [3:0] alu_ctrl;
@@ -44,8 +43,6 @@ module cpu(clock);
 
     //jmp, je実行時に(1)になる信号
     wire jmp_en, je_en;
-
-    instr_mem instr_mem(pc, instr);
 
     decoder decoder(instr, opcode, rs_a_p, rd_a_p, imm);
 
@@ -75,8 +72,6 @@ module cpu(clock);
     end
 
     wire [7:0] dbg_mem_0, dbg_mem_1;
-
-    data_mem data_mem(rs_data, rd_data, mem_w_en, mem_r_data, clock, dbg_mem_0, dbg_mem_1);
 
     always @(posedge clock) begin
         if(jmp_en) begin
