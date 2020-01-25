@@ -18,7 +18,7 @@ ldil 1
 and r2, r3
 cmp r2, r3
 ldih 0
-ldil 5
+ldil e
 je r3
 st r0, r1
 ldih 1
