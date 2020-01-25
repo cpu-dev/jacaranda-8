@@ -7,6 +7,24 @@ module instr_mem(addr, instr);
     assign instr = mem[addr];
 
     initial begin
+        mem[0] = 8'hd0; //1011 1010
+        mem[1] = 8'he0;
+        mem[2] = 8'h03;
+        mem[3] = 8'hd5;
+        mem[4] = 8'he3;
+        mem[5] = 8'h07;
+        mem[6] = 8'hd5;
+        mem[7] = 8'he4;
+        mem[8] = 8'heb;
+        mem[9] = 8'hc0;
+        mem[10] = 8'hd1;
+        mem[11] = 8'h3b;
+        mem[12] = 8'h9b;
+        mem[13] = 8'hc0;
+        mem[14] = 8'hd5;
+        mem[15] = 8'ha3;
+        mem[16] = 8'hf1;
+    /*
         mem[0] = 8'hc0;
         mem[1] = 8'hd7;
         mem[2] = 8'h03;
@@ -41,6 +59,7 @@ module instr_mem(addr, instr);
         mem[31] = 8'hc1;
         mem[32] = 8'hde;
         mem[33] = 8'hb3;
+        */
     end
 endmodule
 
