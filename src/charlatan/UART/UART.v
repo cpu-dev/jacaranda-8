@@ -7,14 +7,14 @@ module UART(
     input wire rx_en,
     input wire begin_flag,
     input wire rx,
+    input wire tx_data,
     output wire tx,
+    output wire rx_data,
     output wire busy_flag,
     output wire receive_flag
 );
 
-    wire[7:0] data;
-
-    tx tx1(clk, tx_en, begin_flag, data, tx, busy_flag);
-    rx rx1(clk, rx_en, rx, data, flag);
+    tx tx1(clk, tx_en, begin_flag, tx_data, tx, busy_flag);
+    rx rx1(clk, rx_en, rx, rx_data, flag);
     
 endmodule
