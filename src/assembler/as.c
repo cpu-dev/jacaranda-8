@@ -7,6 +7,9 @@
 
 //#define DEBUG
 
+#define MODE_BIN 0
+#define MODE_VERILOG 1
+
 typedef enum {
     MOV = 0,
     ADD,
@@ -101,26 +104,37 @@ rdrs(char *p)
 }
 
 int
-main(void)
+main(int argc, char *argv[])
 {
+    char mode = MODE_BIN;
     char buf[256];
     char *p;
     int8_t inst, result;
+    int i;
     FILE *in, *out;
 
-    printf("FILE name: ");
-    scanf("%s", buf);
-
-    if((in = fopen(buf, "r")) == NULL) {
+    if((in = fopen(argv[1], "r")) == NULL) {
         puts("file open error!");
         return -1;
     }
 
-    if((out = fopen("out.bin", "wb")) == NULL) {
-        puts("file open error!");
-        return -1;
+    if(strncmp(argv[2], "verilog", 7) == 0)
+        mode = MODE_VERILOG;
+
+    if(mode == MODE_BIN) {
+        if((out = fopen("out.bin", "wb")) == NULL) {
+            puts("file open error!");
+            return -1;
+        }
+    }
+    else {
+        if((out = fopen("out.txt", "w")) == NULL) {
+            puts("file open error!");
+            return -1;
+        }
     }
 
+    i = 0;
     while(fgets(buf, 256, in) != NULL) {
         if(*buf == '\n') continue;
         p = buf;
@@ -139,16 +153,22 @@ main(void)
             case JE:
             case JMP:
                 result = (inst << 4) | rs(p);
-                fwrite(&result, 1, 1, out);
+                mode == MODE_BIN 
+                    ? fwrite(&result, 1, 1, out) 
+                    : fprintf(out, "mem[%d] = 8'h%02x;\n", i++, result & 0x000000ff);
                 break;
             case LDIH:
             case LDIL:
                 result = (inst << 4) | imm(p);
-                fwrite(&result, 1, 1, out);
+                mode == MODE_BIN 
+                    ? fwrite(&result, 1, 1, out) 
+                    : fprintf(out, "mem[%d] = 8'h%02x;\n", i++, result & 0x000000ff);
                 break;
             default:
                 result = (inst << 4) | rdrs(p);
-                fwrite(&result, 1, 1, out);
+                mode == MODE_BIN 
+                    ? fwrite(&result, 1, 1, out) 
+                    : fprintf(out, "mem[%d] = 8'h%02x;\n", i++, result & 0x000000ff);
                 break;
         }
     }

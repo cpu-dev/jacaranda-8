@@ -22,5 +22,5 @@ ldil e
 je r3
 st r0, r1
 ldih 1
-ldil b
+ldil 9
 jmp r3
