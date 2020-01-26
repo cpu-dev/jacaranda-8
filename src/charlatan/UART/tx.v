@@ -47,7 +47,11 @@ module tx(clk, tx_en, begin_flag, data, tx, busy_flag);
                 tx <= 1'b1;
                 clk_count <= clk_count + 32'd1;
                 case({update_flag, begin_flag})
-                    2'b11: state <= 2'b01;
+                    2'b11: begin
+                        state <= 2'b01;
+                        clk_count <= 32'd0;
+                        bit_count <= 3'd0;
+                    end
                     2'b10: state <= 2'b00;
                     default: state <= state;
                 endcase

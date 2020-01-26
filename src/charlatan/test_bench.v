@@ -18,7 +18,7 @@ module test_bench();
     end
 
     initial begin
-        #10000
+        #100000
         $finish;
     end
 endmodule
