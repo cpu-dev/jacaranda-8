@@ -13,8 +13,8 @@ module instr_mem(addr, instr);
         mem[3] = 8'hcf;
         mem[4] = 8'hdf;
         mem[5] = 8'hf3; //以上追加分
-        mem[6] = 8'hca;
-        mem[7] = 8'hda;
+        mem[6] = 8'hc4;
+        mem[7] = 8'hd1;
         mem[8] = 8'h03;
         mem[9] = 8'hcf;
         mem[10] = 8'hdd;
