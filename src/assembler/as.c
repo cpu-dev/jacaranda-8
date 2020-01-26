@@ -118,8 +118,10 @@ main(int argc, char *argv[])
         return -1;
     }
 
-    if(strncmp(argv[2], "verilog", 7) == 0)
-        mode = MODE_VERILOG;
+    if(argc > 2) {
+        if(strncmp(argv[2], "verilog", 7) == 0)
+            mode = MODE_VERILOG;
+    }
 
     if(mode == MODE_BIN) {
         if((out = fopen("out.bin", "wb")) == NULL) {
