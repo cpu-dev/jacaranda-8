@@ -30,6 +30,7 @@ module computer(
     always @(posedge clock) begin
         if(rs_data == 8'd255 && mem_w_en == 1) begin
             tx_en <= rd_data[0];
+            rx_en <= rd_data[1];
         end
     end
 
@@ -50,7 +51,7 @@ module computer(
                       .clock(clock));
 
     assign mem_r_data = (rs_data == 8'd254) 
-        ? {7'b0, busy_flag}
+        ? {6'b0, receive_flag, busy_flag}
         : _mem_r_data;
 
     UART UART(.clk(clock),

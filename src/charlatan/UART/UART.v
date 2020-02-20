@@ -15,6 +15,6 @@ module UART(
 );
 
     tx tx1(clk, tx_en, begin_flag, tx_data, tx, busy_flag);
-    rx rx1(clk, rx_en, rx, rx_data, flag);
+    rx rx1(clk, rx_en, rx, rx_data, receive_flag);
     
 endmodule
