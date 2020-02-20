@@ -1,7 +1,15 @@
-module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data);
+module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, int_en, int_vec, reg_w_en, ret_addr);
     input clock;
     input [7:0] instr;
+    //割り込み要求線
+    input int_req;
+    //割り込みイネーブル
+    input [7:0] int_en;
+    //割り込みベクタ
+    input [7:0] int_vec;
+
     output [7:0] pc;
+    output [7:0] ret_addr;
     //レジスタから読み込んだデータ
     output [7:0] rd_data, rs_data;
     //メモリにデータを書き込むか
@@ -16,7 +24,7 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data);
     wire [3:0] imm;
 
     //レジスタにデータを書き込むか
-    wire reg_w_en;
+    output reg_w_en;
     //レジスタに書き込むデータとそのバッファ
     wire [7:0] reg_w_data;
     wire [7:0] reg_w_data_p;
@@ -72,8 +80,15 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data);
         end
     end
 
+    //戻りアドレスの格納
+    assign ret_addr = jmp_en ? rs_data
+                    : je_en ? flag ? rs_data : pc + 1
+                    : pc + 1;
+
     always @(posedge clock) begin
-        if(jmp_en) begin
+        if(int_req && int_en[0]) begin
+            pc <= int_vec;
+        end else if(jmp_en) begin
             pc <= rs_data;
         end else if(je_en) begin
             if(flag) begin
