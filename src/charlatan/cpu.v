@@ -86,15 +86,8 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
         end
     end
 
-    //割り込み復帰ジャンプ
     always @(posedge clock) begin
-        if(ret) begin
-            intr_en <= 1'b0;
-        end
-    end
-
-    always @(posedge clock) begin
-        if(int_req == 1'b1) begin
+        if(int_req == 1'b1 && int_en[0]) begin
             if(jmp_en) begin
                 ret_addr <= rs_data;
             end else if(je_en && flag) begin
@@ -113,6 +106,7 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
             _flag <= flag;
             pc <= int_vec;
         end else if(ret) begin
+            intr_en <= 1'b0;
             pc <= ret_addr;
         end else if(jmp_en) begin
             pc <= rs_data;
