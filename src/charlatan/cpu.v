@@ -62,7 +62,7 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
     main_controller main_controller(opcode, rd_a_p, reg_w_en, mem_w_en, reg_reg_mem_w_sel, reg_alu_w_sel, flag_w_en, imm_en, ih_il_sel, jmp_en, je_en, ret);
     alu_controller alu_controller(opcode, alu_ctrl);
 
-    regfile regfile(rd_a, rs_a, reg_w_data, reg_w_en, rd_data, rs_data, clock, register);
+    regfile regfile(rd_a, rs_a, reg_w_data, reg_w_en, rd_data, rs_data, clock, intr_en);
     //即値ロード時のみrd_a, rs_aを3に
     assign rd_a = imm_en ? 2'b11 : rd_a_p;
     assign rs_a = imm_en ? 2'b11 : rs_a_p;
@@ -86,7 +86,7 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
 
     //割り込み復帰ジャンプ
     always @(posedge clock) begin
-        if(jmp_en && rd_a_p == 2'b01) begin
+        if(ret) begin
             flag <= _flag;
             intr_en <= 1'b0;
         end
