@@ -29,7 +29,7 @@ ldil 1
 and r2, r3 // r2 = UFR2 & 0b00000001;
 cmp r2, r3 // r2 = busy_flag == 1
 ldih 1
-ldil 4
+ldil 3
 je r3 // je check_busy
 st r0, r1 // UTD = r0;
 iret
