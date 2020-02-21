@@ -53,12 +53,15 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
     //jmp, je実行時に(1)になる信号
     wire jmp_en, je_en;
 
+    reg intr_en = 1'b0;
+    reg _flag;
+
     decoder decoder(instr, opcode, rs_a_p, rd_a_p, imm);
 
     main_controller main_controller(opcode, reg_w_en, mem_w_en, reg_reg_mem_w_sel, reg_alu_w_sel, flag_w_en, imm_en, ih_il_sel, jmp_en, je_en);
     alu_controller alu_controller(opcode, alu_ctrl);
 
-    regfile regfile(rd_a, rs_a, reg_w_data, reg_w_en, rd_data, rs_data, clock);
+    regfile regfile(rd_a, rs_a, reg_w_data, reg_w_en, rd_data, rs_data, clock, register);
     //即値ロード時のみrd_a, rs_aを3に
     assign rd_a = imm_en ? 2'b11 : rd_a_p;
     assign rs_a = imm_en ? 2'b11 : rs_a_p;
@@ -80,6 +83,14 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
         end
     end
 
+    //割り込み復帰ジャンプ
+    always @(posedge clock) begin
+        if(jmp_en && rd_a_p == 2'b01) begin
+            flag <= _flag;
+            intr_en <= 1'b0;
+        end
+    end
+
     //戻りアドレスの格納
     assign ret_addr = jmp_en ? rs_data
                     : je_en ? flag ? rs_data : pc + 1
@@ -87,6 +98,8 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
 
     always @(posedge clock) begin
         if(int_req && int_en[0]) begin
+            intr_en <= 1'b1;
+            _flag <= flag;
             pc <= int_vec;
         end else if(jmp_en) begin
             pc <= rs_data;
