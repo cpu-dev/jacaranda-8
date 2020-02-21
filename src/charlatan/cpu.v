@@ -92,11 +92,6 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
         end
     end
 
-    //戻りアドレスの格納
-    assign ret_addr = jmp_en ? rs_data
-                    : je_en ? flag ? rs_data : pc + 1
-                    : pc + 1;
-
     always @(posedge clock) begin
         if(int_req == 1'b1) begin
             if(jmp_en) begin
