@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <ctype.h>
 
-//#define DEBUG
+#define DEBUG
 
 #define MODE_BIN 0
 #define MODE_VERILOG 1
@@ -25,7 +25,8 @@ typedef enum {
     LDIH,
     LDIL,
     LD,
-    ST
+    ST,
+    IRET
 } inst_t;
 
 typedef enum {
@@ -68,6 +69,8 @@ opcode(char *mnemonic)
         return LD;
     if(!strncmp(mnemonic, "st", 2))
         return ST;
+    if(!strncmp(mnemonic, "iret", 4))
+        return IRET;
     return -1;
 }
 
@@ -164,6 +167,12 @@ main(int argc, char *argv[])
                 result = (inst << 4) | imm(p);
                 mode == MODE_BIN 
                     ? fwrite(&result, 1, 1, out) 
+                    : fprintf(out, "mem[%d] = 8'h%02x;\n", i++, result & 0x000000ff);
+                break;
+            case IRET:
+                result = 0xb4;
+                mode == MODE_BIN
+                    ? fwrite(&result, 1, 1, out)
                     : fprintf(out, "mem[%d] = 8'h%02x;\n", i++, result & 0x000000ff);
                 break;
             default:
