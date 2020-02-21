@@ -90,6 +90,8 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
     always @(posedge clock) begin
         if(ret) begin
             intr_en <= 1'b0;
+        end else if(int_req && int_en[0]) begin
+				intr_en <= 1'b1;
         end
     end
 
@@ -109,7 +111,6 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
 
     always @(posedge clock) begin
         if(int_req && int_en[0]) begin
-            intr_en <= 1'b1;
             _flag <= flag;
             pc <= int_vec;
         end else if(ret) begin
