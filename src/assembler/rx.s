@@ -12,7 +12,7 @@ ldil 3
 st r3, r2 // UFR1 = 0b00000011
 mov r0, r0
 ldih 0
-ldil c
+ldil f
 jmp r3 //loop
 ldih f
 ldil c

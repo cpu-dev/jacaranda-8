@@ -75,7 +75,9 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
     alu alu(rd_data, rs_data, alu_ctrl, alu_out);
     //フラグレジスタ書き込み
     always @(posedge clock) begin
-        if(je_en) begin
+        if(ret) begin
+            flag <= _flag;
+        end else if(je_en) begin
             flag <= 0;
         end else if(flag_w_en) begin
             flag <= alu_out;
@@ -87,7 +89,6 @@ module cpu(clock, instr, pc, rd_data, rs_data, mem_w_en, mem_r_data, int_req, in
     //割り込み復帰ジャンプ
     always @(posedge clock) begin
         if(jmp_en && rd_a_p == 2'b01) begin
-            flag <= _flag;
             intr_en <= 1'b0;
         end
     end
