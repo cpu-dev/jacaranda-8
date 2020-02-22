@@ -10,19 +10,19 @@ module LED4(input [7:0] in_data,
     always @(posedge clock) begin
         if(delay_cnt == 20'h00000 && begin_flag == 1'b0) begin
             delay_cnt <= 20'h00000;
-            state_reg <= 32'h00000000;
+            state_reg <= 8'b00000000;
             buffer <= in_data;
         end else if(delay_cnt == 20'h00000 && begin_flag == 1'b1) begin
             delay_cnt <= delay_cnt + 20'h00001;
-            state_reg <= 32'h00000001;
+            state_reg <= 8'b00000001;
             buffer <= in_data;
         end else if(delay_cnt != 20'h7a120) begin
             delay_cnt <= delay_cnt + 20'h00001;
-            state_reg <= 32'h00000001;
+            state_reg <= 8'b00000001;
             buffer <= buffer;
         end else if(delay_cnt == 20'h7a120) begin
             delay_cnt <= 20'h00000;
-            state_reg <= 32'h00000001;
+            state_reg <= 8'b00000001;
             out_data <= buffer[3:0];
         end
     end
