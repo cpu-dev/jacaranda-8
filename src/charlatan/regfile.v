@@ -16,7 +16,7 @@ module regfile(rd_addr, rs_addr, w_data, w_en, rd_data, rs_data, clock, intr_en)
             if(w_en == 1) begin
                 intr_register[rd_addr] <= w_data;
             end else begin
-                intr_register[rd_addr] <= register[rd_addr];
+                intr_register[rd_addr] <= intr_register[rd_addr];
             end
         end else begin
             if(w_en == 1) begin
