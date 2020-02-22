@@ -18,12 +18,11 @@ module UART(
 );
 
     reg state = 1'b0;
-    wire end_flag;
 
-    always @(posedge clk) begin
+    always @(negedge clk) begin
         if(state == 1'b0) begin //データ待機中
             int_req <= 1'b0;
-            if(end_flag == 1'b1) begin
+            if(receive_flag == 1'b1) begin
                 state <= 1'b1;
             end else begin
                 state <= state;
