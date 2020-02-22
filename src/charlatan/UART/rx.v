@@ -50,7 +50,10 @@ module rx(clk, rx_en, rx, data, end_flag);
             2'b10: begin
                 end_flag <= 1'b1;
                 clk_count <= clk_count + 32'd1;
-                state <= update_flag ? 2'b00 : state;
+                if(update_flag) begin
+                    state <= 2'b00;
+                    end_flag <= 1'b1;
+                end
             end
         endcase
     end
