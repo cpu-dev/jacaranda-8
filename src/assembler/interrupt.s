@@ -2,7 +2,7 @@ ldih f
 ldil a
 mov r2, r3 // r2 = INT_VECTOR_ADDR
 ldih 1
-ldil 0
+ldil 8
 st r3, r2 // INT_VECTOR_ADDR = r3
 ldih f
 ldil f
