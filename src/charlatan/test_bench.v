@@ -9,7 +9,8 @@ parameter TIME_BIT = $floor(TIMESCALE_HZ / BAUD_RATE);
     reg rx;
     wire[7:0] data;
     wire end_flag;
-    computer cmptr(clk, rx, tx);
+    wire [3:0] led_out_data;
+    computer cmptr(clk, rx, tx, led_out_data);
 
 always #(TIME_CLOCK/2) clk = ~clk;
 
@@ -18,7 +19,7 @@ initial begin
     $dumpvars(0, cmptr);
     clk = 1'b0;
     rx = 1'b1;
-    #1000
+     #1000
     #(2*TIME_BIT);
     rx = 1'b0;
     #(TIME_BIT);
@@ -41,7 +42,117 @@ initial begin
     rx= 1'b1;
     #(2*TIME_BIT);
     #10000
-    #80000
+      #1000
+    #(2*TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx= 1'b1;
+    #(2*TIME_BIT);
+       #1000
+    #(2*TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx= 1'b1;
+    #(2*TIME_BIT);
+    #1000
+    #(2*TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx= 1'b1;
+    #(2*TIME_BIT);
+    #1000
+    #(2*TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx= 1'b1;
+    #(2*TIME_BIT);
+    #1000
+    #(2*TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx = 1'b0;
+    #(TIME_BIT);
+    rx = 1'b1;
+    #(TIME_BIT);
+    rx= 1'b1;
+    #(2*TIME_BIT);
+  #80000
     $finish;
 end
 endmodule
