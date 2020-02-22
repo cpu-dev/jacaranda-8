@@ -1,8 +1,8 @@
 ldih f
 ldil a
 mov r2, r3 // r2 = INT_VECTOR_ADDR
-ldih 1
-ldil 8
+ldih 2
+ldil 1
 st r3, r2 // INT_VECTOR_ADDR = r3
 ldih f
 ldil f
@@ -15,6 +15,15 @@ ldil 0
 mov r0, r3 // r0 = 0
 ldil 1
 mov r1, r3 // r1 = 1
+ldih f
+ldil 9
+ld r2, r3
+ldih 0
+ldil 1
+cmp r2, r3
+ldih 1
+ldil 1
+je r3
 ldih f
 ldil b
 st r0, r3 // LED_ADDR = r0
@@ -36,8 +45,8 @@ ldih 0
 ldil 1
 and r2, r3 // r2 = UFR2 & 0b00000001;
 cmp r2, r3 // r2 = busy_flag == 1
-ldih 1
-ldil b
+ldih 2
+ldil 4
 je r3 // je check_busy
 st r0, r1 // UTD = r0;
 iret
