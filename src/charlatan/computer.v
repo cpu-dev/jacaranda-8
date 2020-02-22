@@ -1,7 +1,8 @@
 module computer(
     input clock,
     input rx,
-    output tx
+    output tx,
+    output [3:0] led_out_data
 );
     wire [7:0] instr;
     wire [7:0] pc;
@@ -24,6 +25,8 @@ module computer(
     wire int_req;
 
     wire reg_w_en;
+
+    reg [7:0] led_in_data;
 
     instr_mem instr_mem(.addr(pc),
                         .instr(instr));
@@ -68,6 +71,14 @@ module computer(
                       : (rs_data == 8'd250) ? int_vec   //割り込みベクタ
                       : _mem_r_data;
 
+    always @(posedge clock) begin
+        if(rs_data == 8'd251 && mem_w_en == 1) begin
+            led_in_data <= rd_data;
+        end else begin
+            led_in_data <= led_in_data;
+        end
+    end
+    
 
     //割り込み要求が立っている時は割り込み不許可
     always @(posedge clock) begin
@@ -101,4 +112,7 @@ module computer(
               .access_addr(rs_data),
               .reg_w_en(reg_w_en));
 
+    LED4 LED4(.clock(clock),
+              .led_in_data(led_in_data),
+              .led_out_data(led_out_data));
 endmodule
