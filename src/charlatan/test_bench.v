@@ -17,8 +17,8 @@ initial begin
     $dumpfile("wave.vcd");
     $dumpvars(0, cmptr);
     clk = 1'b0;
-    #1000
     rx = 1'b1;
+    #1000
     #(2*TIME_BIT);
     rx = 1'b0;
     #(TIME_BIT);
