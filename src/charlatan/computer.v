@@ -27,6 +27,8 @@ module computer(
     wire reg_w_en;
 
     reg [7:0] led_in_data;
+    reg led_begin_flag;
+    wire [7:0] led_state_reg;
 
     instr_mem instr_mem(.addr(pc),
                         .instr(instr));
@@ -69,13 +71,16 @@ module computer(
     assign mem_r_data = (rs_data == 8'd254) ? {6'b0, receive_flag, busy_flag}
                       : (rs_data == 8'd252) ? rx_data   //UART RX
                       : (rs_data == 8'd250) ? int_vec   //割り込みベクタ
+                      : (rs_data == 8'd249) ? led_state_reg
                       : _mem_r_data;
 
     always @(posedge clock) begin
         if(rs_data == 8'd251 && mem_w_en == 1) begin
             led_in_data <= rd_data;
+            led_begin_flag <= 1'b1;
         end else begin
             led_in_data <= led_in_data;
+            led_begin_flag <= 1'b0;
         end
     end
     
@@ -112,7 +117,9 @@ module computer(
               .access_addr(rs_data),
               .reg_w_en(reg_w_en));
 
-    LED4 LED4(.clock(clock),
-              .led_in_data(led_in_data),
-              .led_out_data(led_out_data));
+    LED4 LED4(.in_data(led_in_data),
+              .begin_flag(led_begin_flag),
+              .state_reg(led_state_reg),
+              .out_data(led_out_data),
+              .clock(clock));
 endmodule
