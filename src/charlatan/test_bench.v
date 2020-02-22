@@ -41,6 +41,7 @@ initial begin
     rx= 1'b1;
     #(2*TIME_BIT);
     #10000
+    #80000
     $finish;
 end
 endmodule
