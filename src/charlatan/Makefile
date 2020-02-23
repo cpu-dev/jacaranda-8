@@ -1,4 +1,4 @@
-verilog = alu_controller.v  alu.v  computer.v  cpu.v  data_mem.v  decoder.v  instr_mem.v  main_controller.v  regfile.v  test_bench.v UART/UART.v UART/tx.v UART/rx.v LED/LED4.v
+verilog = alu_controller.v  alu.v  computer.v  cpu.v  data_mem.v  decoder.v  instr_mem.v  main_controller.v  regfile.v  test_bench.v UART/UART.v UART/tx.v UART/rx.v LED/LED4.v 7SEG/bin_dec_decoder.v 7SEG/nanaseg_decoder.v 7SEG/nanaseg.v
 output = computer
 top = test_bench
 wave = wave.vcd

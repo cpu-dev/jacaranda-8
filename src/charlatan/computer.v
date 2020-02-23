@@ -2,7 +2,10 @@ module computer(
     input clock,
     input rx,
     output tx,
-    output [3:0] led_out_data
+    output [3:0] led_out_data,
+    output [6:0] seg_out_1,
+    output [6:0] seg_out_2,
+    output [6:0] seg_out_3
 );
     wire [7:0] instr;
     wire [7:0] pc;
@@ -29,6 +32,8 @@ module computer(
     reg [7:0] led_in_data;
     reg led_begin_flag;
     wire [7:0] led_state_reg;
+
+    reg [7:0] nanaseg_in_data;
 
     instr_mem instr_mem(.addr(pc),
                         .instr(instr));
@@ -83,6 +88,14 @@ module computer(
             led_begin_flag <= 1'b0;
         end
     end
+
+    always @(posedge clock) begin
+        if(rs_data == 8'd248 && mem_w_en == 1) begin
+            nanaseg_in_data <= rd_data;
+        end else begin
+            nanaseg_in_data <= nanaseg_in_data;
+        end
+    end
     
 
     //割り込み要求が立っている時は割り込み不許可
@@ -122,4 +135,10 @@ module computer(
               .state_reg(led_state_reg),
               .out_data(led_out_data),
               .clock(clock));
+
+    nanaseg nanaseg(.bin_in(nanaseg_in_data),
+                    .seg_dig1(seg_out_1),
+                    .seg_dig2(seg_out_2),
+                    .seg_dig3(seg_out_3));
+
 endmodule

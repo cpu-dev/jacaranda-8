@@ -10,7 +10,10 @@ parameter TIME_BIT = $floor(TIMESCALE_HZ / BAUD_RATE);
     wire[7:0] data;
     wire end_flag;
     wire [3:0] led_out_data;
-    computer cmptr(clk, rx, tx, led_out_data);
+    wire [6:0] seg_out_1;
+    wire [6:0] seg_out_2;
+    wire [6:0] seg_out_3;
+    computer cmptr(clk, rx, tx, led_out_data, seg_out_1, seg_out_2, seg_out_3);
 
 always #(TIME_CLOCK/2) clk = ~clk;
 
