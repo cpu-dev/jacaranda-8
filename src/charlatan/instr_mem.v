@@ -34,13 +34,15 @@ module instr_mem(addr, instr);
         mem[24] = 8'hf7;
         mem[25] = 8'h06;
         mem[26] = 8'heb;
-        mem[27] = 8'h13;
-        mem[28] = 8'hc0;
-        mem[29] = 8'hde;
-        mem[30] = 8'hb3;
-        mem[31] = 8'hc2;
-        mem[32] = 8'hd1;
-        mem[33] = 8'hb3;
+        mem[27] = 8'hc0;
+        mem[28] = 8'hd1;
+        mem[29] = 8'h13;
+        mem[30] = 8'hc0;
+        mem[31] = 8'hde;
+        mem[32] = 8'hb3;
+        mem[33] = 8'hc2;
+        mem[34] = 8'hd1;
+        mem[35] = 8'hb3;
 
 /*
         mem[0] = 8'hc0;
