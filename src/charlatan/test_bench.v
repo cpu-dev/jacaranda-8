@@ -155,7 +155,7 @@ initial begin
     #(TIME_BIT);
     rx= 1'b1;
     #(2*TIME_BIT);
-  #80000
+  #100000
     $finish;
 end
 endmodule

@@ -7,61 +7,44 @@ module instr_mem(addr, instr);
     assign instr = mem[addr];
 
     initial begin
-        mem[0] = 8'hcf;
-        mem[1] = 8'hda;
-        mem[2] = 8'h0b;
-        mem[3] = 8'hc2;
-        mem[4] = 8'hd1;
-        mem[5] = 8'hfe;
-        mem[6] = 8'hcf;
-        mem[7] = 8'hdf;
-        mem[8] = 8'h0b;
-        mem[9] = 8'hc0;
-        mem[10] = 8'hd3;
-        mem[11] = 8'hfe;
-        mem[12] = 8'hc0;
-        mem[13] = 8'hd0;
-        mem[14] = 8'h03;
-        mem[15] = 8'hd1;
-        mem[16] = 8'h07;
-        mem[17] = 8'hcf;
-        mem[18] = 8'hd9;
-        mem[19] = 8'heb;
-        mem[20] = 8'hc0;
-        mem[21] = 8'hd1;
-        mem[22] = 8'h9b;
-        mem[23] = 8'hc1;
-        mem[24] = 8'hd1;
-        mem[25] = 8'ha3;
-        mem[26] = 8'hcf;
-        mem[27] = 8'hdb;
-        mem[28] = 8'hf3;
-        mem[29] = 8'h11;
-        mem[30] = 8'hc1;
-        mem[31] = 8'hd1;
+        mem[0] = 8'hc0;
+        mem[1] = 8'hd7;
+        mem[2] = 8'h03;
+        mem[3] = 8'hc0;
+        mem[4] = 8'hd0;
+        mem[5] = 8'hf3;
+        mem[6] = 8'h03;
+        mem[7] = 8'hcf;
+        mem[8] = 8'hd8;
+        mem[9] = 8'hf3;
+        mem[10] = 8'hc0;
+        mem[11] = 8'hd1;
+        mem[12] = 8'h07;
+        mem[13] = 8'h0b;
+        mem[14] = 8'hc0;
+        mem[15] = 8'hd0;
+        mem[16] = 8'hef;
+        mem[17] = 8'h93;
+        mem[18] = 8'hc2;
+        mem[19] = 8'hd1;
+        mem[20] = 8'ha3;
+        mem[21] = 8'h16;
+        mem[22] = 8'hcf;
+        mem[23] = 8'hd8;
+        mem[24] = 8'hf7;
+        mem[25] = 8'h06;
+        mem[26] = 8'heb;
+        mem[27] = 8'hc0;
+        mem[28] = 8'hd1;
+        mem[29] = 8'h13;
+        mem[30] = 8'hc0;
+        mem[31] = 8'hde;
         mem[32] = 8'hb3;
-        mem[33] = 8'hcf;
-        mem[34] = 8'hdc;
-        mem[35] = 8'he3;
-        mem[36] = 8'hcf;
-        mem[37] = 8'hdd;
-        mem[38] = 8'h07;
-        mem[39] = 8'hcf;
-        mem[40] = 8'hde;
-        mem[41] = 8'heb;
-        mem[42] = 8'hc0;
-        mem[43] = 8'hd1;
-        mem[44] = 8'h3b;
-        mem[45] = 8'h9b;
-        mem[46] = 8'hc2;
-        mem[47] = 8'hd4;
-        mem[48] = 8'ha3;
-        mem[49] = 8'hf1;
-        mem[50] = 8'hb4;
+        mem[33] = 8'hc2;
+        mem[34] = 8'hd3;
+        mem[35] = 8'hb3;
 
-
-
-    /*
+/*
         mem[0] = 8'hc0;
         mem[1] = 8'hd7;
         mem[2] = 8'h03;
@@ -96,7 +79,7 @@ module instr_mem(addr, instr);
         mem[31] = 8'hc1;
         mem[32] = 8'hde;
         mem[33] = 8'hb3;
-        */
+*/
     end
 endmodule
 
