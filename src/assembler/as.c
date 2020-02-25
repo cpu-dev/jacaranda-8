@@ -85,6 +85,37 @@ opcode(char *mnemonic)
     return -1;
 }
 
+void
+new_label(char name, int addr)
+{
+    struct label *p;
+    p = head;
+
+    while(p->next != NULL)
+        p = p->next;
+
+    p->next = (struct label *)malloc(sizeof(struct label));
+    p->next->name = name;
+    p->next->addr = addr;
+    p->next->next = NULL;
+}
+
+uint8_t
+search_label(char name)
+{
+    struct label *p;
+    p = head->next;
+
+    while(p != NULL) {
+        if(p->name == name) {
+            return p->addr;
+        }
+        p = p->next;
+    }
+    printf("unknown label referenced: %c\n", name);
+    exit(-1);
+}
+
 uint8_t
 rs(char *p)
 {
@@ -109,6 +140,8 @@ ex_imm(char *p)
 #ifdef DEBUG
     printf("arguments(ex_imm): %s\n", p);
 #endif
+    if(isalpha(*p))
+        return search_label(*p);
     return strtol(p, &p, 16);
 }
 
@@ -124,36 +157,6 @@ rdrs(char *p)
         ++p;
     rs = strtol(++p, &p, 16);
     return (rd << 2) + rs;
-}
-
-void
-new_label(char name, int addr)
-{
-    struct label *p;
-    p = head;
-
-    while(p != NULL)
-        p = p->next;
-
-    p = (struct label *)malloc(sizeof(struct label));
-    p->name = name;
-    p->addr = addr;
-    p->next = NULL;
-}
-
-uint8_t
-search_label(char name)
-{
-    struct label *p;
-    p = head->next;
-
-    while(p != NULL) {
-        if(p->name == name) {
-            return p->addr;
-        }
-        p = p->next;
-    }
-    printf("unknown label referenced: %c\n", name);
 }
 
 int
@@ -200,12 +203,16 @@ main(int argc, char *argv[])
         p = buf;
         while(isspace(*p)) ++p;
         if(!strncmp(p, "//", 2)) continue;
+        inst = opcode(p);
         while(isalpha(*p)) ++p;
         if(*p == ':') {
+#ifdef DEBUG
             printf("new label in L%d: %c\n", i, *(p-1));
+#endif
             new_label(*(p-1), i);
         }
         else {
+            if(inst == LDI) ++i;
             ++i;
             continue;
         }
@@ -223,6 +230,7 @@ main(int argc, char *argv[])
         printf("instruction number: %d\n", inst);
 #endif
         while(isalpha(*p)) ++p;
+        if(*p == ':') continue;
         while(isspace(*p)) ++p;
         switch(inst) {
             case -1:
