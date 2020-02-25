@@ -10,6 +10,14 @@
 #define MODE_BIN 0
 #define MODE_VERILOG 1
 
+struct label {
+    char name;
+    uint8_t addr;
+    struct label *next;
+};
+
+struct label *head;
+
 typedef enum {
     MOV = 0,
     ADD,
@@ -89,7 +97,7 @@ imm(char *p)
 #ifdef DEBUG
     printf("arguments(imm): %s\n", p);
 #endif
-   return strtol(p, &p, 16);
+    return strtol(p, &p, 16);
 }
 
 uint8_t
@@ -104,6 +112,36 @@ rdrs(char *p)
         ++p;
     rs = strtol(++p, &p, 16);
     return (rd << 2) + rs;
+}
+
+void
+new_label(char name, int addr)
+{
+    struct label *p;
+    p = head;
+
+    while(p != NULL)
+        p = p->next;
+
+    p = (struct label *)malloc(sizeof(struct label));
+    p->name = name;
+    p->addr = addr;
+    p->next = NULL;
+}
+
+uint8_t
+search_label(char name)
+{
+    struct label *p;
+    p = head->next;
+
+    while(p != NULL) {
+        if(p->name == name) {
+            return p->addr;
+        }
+        p = p->next;
+    }
+    printf("unknown label referenced: %c\n", name);
 }
 
 int
@@ -139,6 +177,29 @@ main(int argc, char *argv[])
         }
     }
 
+    head = (struct label *)malloc(sizeof(struct label));
+    head->name = 0;
+    head->addr = 0;
+    head->next = NULL;
+
+    i = 0;
+    while(fgets(buf, 256, in) != NULL) {
+        if(*buf == '\n') continue;
+        p = buf;
+        while(isspace(*p)) ++p;
+        if(!strncmp(p, "//", 2)) continue;
+        while(isalpha(*p)) ++p;
+        if(*p == ':') {
+            printf("new label in L%d: %c\n", i, *(p-1));
+            new_label(*(p-1), i);
+        }
+        else {
+            ++i;
+            continue;
+        }
+    }
+
+    rewind(in);
     i = 0;
     while(fgets(buf, 256, in) != NULL) {
         if(*buf == '\n') continue;
@@ -183,8 +244,6 @@ main(int argc, char *argv[])
                 break;
         }
     }
-    fclose(in);
-    fclose(out);
     return 0;
 }
 
