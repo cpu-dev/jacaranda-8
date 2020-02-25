@@ -34,7 +34,8 @@ typedef enum {
     LDIL,
     LD,
     ST,
-    IRET
+    IRET,
+    LDI
 } inst_t;
 
 typedef enum {
@@ -73,6 +74,8 @@ opcode(char *mnemonic)
         return LDIH;
     if(!strncmp(mnemonic, "ldil", 4))
         return LDIL;
+    if(!strncmp(mnemonic, "ldi", 3))
+        return LDI;
     if(!strncmp(mnemonic, "ld", 2))
         return LD;
     if(!strncmp(mnemonic, "st", 2))
@@ -96,6 +99,15 @@ imm(char *p)
 {
 #ifdef DEBUG
     printf("arguments(imm): %s\n", p);
+#endif
+    return strtol(p, &p, 16);
+}
+
+uint8_t
+ex_imm(char *p)
+{
+#ifdef DEBUG
+    printf("arguments(ex_imm): %s\n", p);
 #endif
     return strtol(p, &p, 16);
 }
@@ -232,6 +244,16 @@ main(int argc, char *argv[])
                 break;
             case IRET:
                 result = 0xb4;
+                mode == MODE_BIN
+                    ? fwrite(&result, 1, 1, out)
+                    : fprintf(out, "mem[%d] = 8'h%02x;\n", i++, result & 0x000000ff);
+                break;
+            case LDI:
+                result = (LDIH << 4) | (ex_imm(p) >> 4);
+                mode == MODE_BIN
+                    ? fwrite(&result, 1, 1, out)
+                    : fprintf(out, "mem[%d] = 8'h%02x;\n", i++, result & 0x000000ff);
+                result = (LDIL << 4) | (ex_imm(p) & 0x0f);
                 mode == MODE_BIN
                     ? fwrite(&result, 1, 1, out)
                     : fprintf(out, "mem[%d] = 8'h%02x;\n", i++, result & 0x000000ff);
