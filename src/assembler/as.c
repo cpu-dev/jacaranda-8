@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <ctype.h>
 
-#define DEBUG
+//#define DEBUG
 
 #define MODE_BIN 0
 #define MODE_VERILOG 1
