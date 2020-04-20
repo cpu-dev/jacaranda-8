@@ -1,5 +1,6 @@
 module regfile(rd_addr, rs_addr, w_data, w_en, rd_data, rs_data, clock, intr_en);
     input [1:0] rd_addr, rs_addr;
+    input [1:0] w_rd_addr;
     input [7:0] w_data;
     input w_en;
     input clock;
@@ -14,15 +15,15 @@ module regfile(rd_addr, rs_addr, w_data, w_en, rd_data, rs_data, clock, intr_en)
     always @(posedge clock) begin
         if(intr_en) begin
             if(w_en == 1) begin
-                intr_register[rd_addr] <= w_data;
+                intr_register[w_rd_addr] <= w_data;
             end else begin
-                intr_register[rd_addr] <= intr_register[rd_addr];
+                intr_register[w_rd_addr] <= intr_register[w_rd_addr];
             end
         end else begin
             if(w_en == 1) begin
-                register[rd_addr] <= w_data;
+                register[w_rd_addr] <= w_data;
             end else begin
-                register[rd_addr] <= register[rd_addr];
+                register[w_rd_addr] <= register[w_rd_addr];
             end
         end
     end
