@@ -16,6 +16,34 @@ module cpu(
     reg [1:0]   ID_EX_rd_a;
     reg [7:0]   ID_EX_rd_data   = 8'h00;
     reg [3:0]   ID_EX_imm;
+    reg         ID_EX_reg_w_en;
+    reg         ID_EX_mem_w_en;
+    reg         ID_EX_reg_reg_mem_w_en;
+    reg         ID_EX_imm_en;
+    reg         ID_EX_ih_il_sel;
+    reg         ID_EX_alu_ctrl;
+
+    reg [7:0]   EX_MEM_alu_out;
+    reg         EX_MEM_imm_en;
+    reg [3:0]   EX_MEM_imm;
+    reg [1:0]   EX_MEM_rs_a;
+    reg [7:0]   EX_MEM_rs_data;
+    reg [1:0]   EX_MEM_rd_a;
+    reg [7:0]   EX_MEM_rd_data;
+    reg         EX_MEM_reg_w_en;
+    reg         EX_MEM_mem_w_en;
+    reg         EX_MEM_ih_il_sel;
+    reg         EX_MEM_reg_reg_mem_w_sel;
+
+    reg         MEM_WB_ih_il_sel;
+    reg         MEM_WB_imm_en;
+    reg [3:0]   MEM_WB_imm;
+    reg [7:0]   MEM_WB_rs_data;
+    reg [7:0]   MEM_WB_alu_out;
+    reg         MEM_wb_reg_w_en;
+    reg         MEM_WB_reg_reg_mem_w_sel;
+    reg [1:0]   MEM_WB_rd_a;
+    reg [7:0]   MEM_WB_mem_r_data;
 
     decoder     decoder(
                     .instr  (IF_ID_instr),
